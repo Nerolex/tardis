@@ -19,19 +19,22 @@ if (argv['v'])
     var directory = argv['d'];
     console.log("Starting validation in directory " + directory);
 
-    test(directory);
+    readXML(directory + '/foo.xml', function(parsedXml) {
+        console.log(parsedXml);
+    });
   }
 }
 
-function test(directory) {
+function readXML(file, callback) {
   var fileSystem = require('fs');
   xml2js = require('xml2js');
 
+  console.log("Trying to read file " + file);
+
   var parser = new xml2js.Parser();
-  fileSystem.readFile(directory + '/foo.xml', function(error, data) {
-    parser.parseString(data, function (error, result) {
-      console.dir(result);
-      console.log('Done');
+  fileSystem.readFile(file, function(error, rawXml) {
+    parser.parseString(rawXml, function (error, parsedXml) {
+      callback(parsedXml);
     });
   });
 }
