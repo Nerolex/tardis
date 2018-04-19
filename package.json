@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/Nerolex/tardis/issues"
   },
-  "homepage": "https://github.com/Nerolex/tardis#readme"
+  "homepage": "https://github.com/Nerolex/tardis#readme",
+  "dependencies": {
+    "xml2js": "0.4.19",
+    "minimist": "1.2.0"
+  }
 }
