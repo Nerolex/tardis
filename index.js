@@ -3,6 +3,9 @@ const { lstatSync, readdirSync } = require('fs');
 const { join } = require('path');
 const { parse } = require('pixl-xml');
 
+const shouldValidate = args => args['v'];
+const validationDir = args = > args['d'];
+
 const parseXML = file => {
                             try
                             {
@@ -32,15 +35,15 @@ console.dir(argv);
         -c create
 */
 
-if (argv['v'])
+if (shouldValidate(argv)))
 {
-  if (!argv['d'])
+  if (!validationDir(argv))
   {
     console.error("Argument for directory is missing. Please define a directory with -d.");
   }
   else
   {
-    var directory = argv['d'];
+    var directory = validationDir(argv);
     console.log("Starting validation in directory " + directory);
 
     if (isSubDirectory(directory))
@@ -52,8 +55,8 @@ if (argv['v'])
     }
     else
     {
-      //Should we check for date convention of folder names?
       //IF we are in the parent directory for the changelogs, go into each changelogfolder and start validation
+
     }
   }
 }
