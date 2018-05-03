@@ -14,6 +14,7 @@ const validateDirectories = (path, depth) =>
   if (isChangeLogPath(path))
   {
     //validate ChangeLog directories
+    console.log("Validating current directory " + path);
     return validateChangeLogs(getChangeLogDirectories(path));
   }
   else
@@ -22,7 +23,8 @@ const validateDirectories = (path, depth) =>
     if (depth > 0)
     {
       //Look recursively below, join paths
-      //getDirectories(path).filter(directory => validateDirectories(path + "/"))
+      console.log("Looking for sub directories at path " + path);
+      return getDirectories(path).filter(directory => validateDirectories(join(path, directory))) > 0;
     }
     else
     {
@@ -64,11 +66,11 @@ const getChangeLogDirectories = path => {console.log("!" + path); getDirectories
 const isChangeLogDirectory = directory => containsXMLFile(directory) && containsChangeLogXML(directory);
 const getChangeLogXMLs = directory => getXMLFiles(directory).filter(XMLFile => isChangeLogXML(parseXML(XMLFile)));
 const containsChangeLogXML = directory => getChangeLogXMLs(directory) > 0;
-const isChangeLogXML = XML => XML['databaseChangeLog'] ? true : false;
+const isChangeLogXML = xml => xml['databaseChangeLog'] ? true : false;
 const containsXMLFile = path => getXMLFiles(path).length > 0;
 const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory);
-const getXMLFiles = path => readdirSync(path).filter(file => file.split('.').pop() == 'XML');
+const getXMLFiles = path => readdirSync(path).filter(file => file.split('.').pop() == 'xml');
 
 //Main
 var argv = require('minimist')(process.argv.slice(2));
@@ -96,7 +98,6 @@ if (shouldValidate(argv))
       //are there any left over files?
       //Are there any two files with the same changelog id?
       //IF we are in the parent directory for the changelogs, go into each changelogfolder and start validation
-
-    console.dir(validateDirectories(directory, 5));
+    //console.dir(validateDirectories(directory, 5));
   }
 }
